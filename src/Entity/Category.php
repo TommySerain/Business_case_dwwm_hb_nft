@@ -21,9 +21,13 @@ class Category
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'subCategory')]
     private ?self $subCategory = null;
 
+    #[ORM\ManyToMany(targetEntity: NFT::class, mappedBy: 'category')]
+    private Collection $nFTs;
+
     public function __construct()
     {
         $this->subCategory = new ArrayCollection();
+        $this->nFTs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -72,6 +76,33 @@ class Category
             if ($subCategory->getSubCategory() === $this) {
                 $subCategory->setSubCategory(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, NFT>
+     */
+    public function getNFTs(): Collection
+    {
+        return $this->nFTs;
+    }
+
+    public function addNFT(NFT $nFT): static
+    {
+        if (!$this->nFTs->contains($nFT)) {
+            $this->nFTs->add($nFT);
+            $nFT->addCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNFT(NFT $nFT): static
+    {
+        if ($this->nFTs->removeElement($nFT)) {
+            $nFT->removeCategory($this);
         }
 
         return $this;
