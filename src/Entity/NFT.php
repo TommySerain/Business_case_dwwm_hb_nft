@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\NFTRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -31,6 +33,17 @@ class NFT
 
     #[ORM\Column]
     private ?float $launchPriceEur = null;
+
+    #[ORM\ManyToOne(inversedBy: 'nFTs')]
+    private ?CollectionNft $collection = null;
+
+    #[ORM\ManyToMany(targetEntity: category::class, inversedBy: 'nFTs')]
+    private Collection $category;
+
+    public function __construct()
+    {
+        $this->category = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -105,6 +118,42 @@ class NFT
     public function setLaunchPriceEur(float $launchPriceEur): static
     {
         $this->launchPriceEur = $launchPriceEur;
+
+        return $this;
+    }
+
+    public function getCollection(): ?CollectionNft
+    {
+        return $this->collection;
+    }
+
+    public function setCollection(?CollectionNft $collection): static
+    {
+        $this->collection = $collection;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, category>
+     */
+    public function getCategory(): Collection
+    {
+        return $this->category;
+    }
+
+    public function addCategory(category $category): static
+    {
+        if (!$this->category->contains($category)) {
+            $this->category->add($category);
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(category $category): static
+    {
+        $this->category->removeElement($category);
 
         return $this;
     }
