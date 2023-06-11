@@ -19,14 +19,14 @@ class Category
     private ?string $name = null;
 
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'subCategory')]
-    private ?Collection $subCategory = null;
+    private ?self $subCategory = null;
 
     #[ORM\ManyToMany(targetEntity: NFT::class, mappedBy: 'category')]
     private Collection $nFTs;
 
     public function __construct()
     {
-        $this->subCategory = new ArrayCollection();
+        // $this->subCategory = new ArrayCollection();
         $this->nFTs = new ArrayCollection();
     }
 
@@ -59,27 +59,27 @@ class Category
         return $this;
     }
 
-    public function addSubCategory(self $subCategory): static
-    {
-        if (!$this->subCategory->contains($subCategory)) {
-            $this->subCategory->add($subCategory);
-            $subCategory->setSubCategory($this);
-        }
+    // public function addSubCategory(self $subCategory): static
+    // {
+    //     if (!$this->subCategory->contains($subCategory)) {
+    //         $this->subCategory->add($subCategory);
+    //         $subCategory->setSubCategory($this);
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
-    public function removeSubCategory(self $subCategory): static
-    {
-        if ($this->subCategory->removeElement($subCategory)) {
-            // set the owning side to null (unless already changed)
-            if ($subCategory->getSubCategory() === $this) {
-                $subCategory->setSubCategory(null);
-            }
-        }
+    // public function removeSubCategory(self $subCategory): static
+    // {
+    //     if ($this->subCategory->removeElement($subCategory)) {
+    //         // set the owning side to null (unless already changed)
+    //         if ($subCategory->getSubCategory() === $this) {
+    //             $subCategory->setSubCategory(null);
+    //         }
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     /**
      * @return Collection<int, NFT>
