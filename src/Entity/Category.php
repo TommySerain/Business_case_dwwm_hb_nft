@@ -19,7 +19,7 @@ class Category
     private ?string $name = null;
 
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'subCategory')]
-    private ?self $subCategory = null;
+    private ?Collection $subCategory = null;
 
     #[ORM\ManyToMany(targetEntity: NFT::class, mappedBy: 'category')]
     private Collection $nFTs;
