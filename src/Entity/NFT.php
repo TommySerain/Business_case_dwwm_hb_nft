@@ -37,7 +37,7 @@ class NFT
     #[ORM\ManyToOne(inversedBy: 'nFTs')]
     private ?CollectionNft $collection = null;
 
-    #[ORM\ManyToMany(targetEntity: category::class, inversedBy: 'nFTs')]
+    #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'nFTs')]
     private Collection $category;
 
     public function __construct()
@@ -135,14 +135,14 @@ class NFT
     }
 
     /**
-     * @return Collection<int, category>
+     * @return Collection<int, Category>
      */
     public function getCategory(): Collection
     {
         return $this->category;
     }
 
-    public function addCategory(category $category): static
+    public function addCategory(Category $category): static
     {
         if (!$this->category->contains($category)) {
             $this->category->add($category);
@@ -151,7 +151,7 @@ class NFT
         return $this;
     }
 
-    public function removeCategory(category $category): static
+    public function removeCategory(Category $category): static
     {
         $this->category->removeElement($category);
 
