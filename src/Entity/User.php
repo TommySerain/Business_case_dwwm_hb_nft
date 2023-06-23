@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -52,6 +54,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToOne(inversedBy: 'users')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Country $country = null;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: NFT::class)]
+    private Collection $nft;
+
+    public function __construct()
+    {
+        $this->nft = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -234,6 +244,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setCountry(?Country $country): static
     {
         $this->country = $country;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, NFT>
+     */
+    public function getNft(): Collection
+    {
+        return $this->nft;
+    }
+
+    public function addNft(NFT $nft): static
+    {
+        if (!$this->nft->contains($nft)) {
+            $this->nft->add($nft);
+            $nft->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNft(NFT $nft): static
+    {
+        if ($this->nft->removeElement($nft)) {
+            // set the owning side to null (unless already changed)
+            if ($nft->getUser() === $this) {
+                $nft->setUser(null);
+            }
+        }
 
         return $this;
     }
