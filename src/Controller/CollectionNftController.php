@@ -69,7 +69,7 @@ class CollectionNftController extends AbstractController
     #[Route('/{id}', name: 'app_collection_nft_delete', methods: ['POST'])]
     public function delete(Request $request, CollectionNft $collectionNft, CollectionNftRepository $collectionNftRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$collectionNft->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $collectionNft->getId(), $request->request->get('_token'))) {
             $collectionNftRepository->remove($collectionNft, true);
         }
 

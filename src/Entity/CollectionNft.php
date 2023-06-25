@@ -21,6 +21,7 @@ class CollectionNft
     #[ORM\OneToMany(mappedBy: 'collection', targetEntity: NFT::class)]
     private Collection $nFTs;
 
+
     public function __construct()
     {
         $this->nFTs = new ArrayCollection();

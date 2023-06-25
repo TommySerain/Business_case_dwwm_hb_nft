@@ -80,7 +80,8 @@ class AppFixtures extends Fixture
                 ->setLaunchPriceEth($faker->randomFloat(0.1, 2))
                 ->setLaunchPriceEur($faker->randomFloat(0.1, 2))
                 ->setCollection($faker->randomElement($collectionsNft))
-                ->setUser($faker->randomElement($users));
+                ->setUser($faker->randomElement($users))
+                ->setDescription($faker->paragraph(1));
             $manager->persist($nft);
         };
 

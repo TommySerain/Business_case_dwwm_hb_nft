@@ -43,6 +43,9 @@ class NFT
     #[ORM\ManyToOne(inversedBy: 'nft')]
     private ?User $user = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $description = null;
+
     public function __construct()
     {
         $this->category = new ArrayCollection();
@@ -169,6 +172,18 @@ class NFT
     public function setUser(?User $user): static
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): static
+    {
+        $this->description = $description;
 
         return $this;
     }
