@@ -10,18 +10,18 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/n/f/t')]
+#[Route('/nft')]
 class NFTController extends AbstractController
 {
-    #[Route('/', name: 'app_n_f_t_index', methods: ['GET'])]
+    #[Route('/', name: 'app_nft_index', methods: ['GET'])]
     public function index(NFTRepository $nFTRepository): Response
     {
         return $this->render('nft/index.html.twig', [
-            'n_f_ts' => $nFTRepository->findAll(),
+            'nfts' => $nFTRepository->findAll(),
         ]);
     }
 
-    #[Route('/new', name: 'app_n_f_t_new', methods: ['GET', 'POST'])]
+    #[Route('/new', name: 'app_nft_new', methods: ['GET', 'POST'])]
     public function new(Request $request, NFTRepository $nFTRepository): Response
     {
         $nFT = new NFT();
@@ -31,24 +31,24 @@ class NFTController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $nFTRepository->save($nFT, true);
 
-            return $this->redirectToRoute('app_n_f_t_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_nft_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('nft/new.html.twig', [
-            'n_f_t' => $nFT,
+            'nft' => $nFT,
             'form' => $form,
         ]);
     }
 
-    #[Route('/{id}', name: 'app_n_f_t_show', methods: ['GET'])]
+    #[Route('/{id}', name: 'app_nft_show', methods: ['GET'])]
     public function show(NFT $nFT): Response
     {
         return $this->render('nft/show.html.twig', [
-            'n_f_t' => $nFT,
+            'nft' => $nFT,
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_n_f_t_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: 'app_nft_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, NFT $nFT, NFTRepository $nFTRepository): Response
     {
         $form = $this->createForm(NFTType::class, $nFT);
@@ -57,7 +57,7 @@ class NFTController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $nFTRepository->save($nFT, true);
 
-            return $this->redirectToRoute('app_n_f_t_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_nft_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('nft/edit.html.twig', [
@@ -66,13 +66,13 @@ class NFTController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_n_f_t_delete', methods: ['POST'])]
+    #[Route('/{id}', name: 'app_nft_delete', methods: ['POST'])]
     public function delete(Request $request, NFT $nFT, NFTRepository $nFTRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$nFT->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $nFT->getId(), $request->request->get('_token'))) {
             $nFTRepository->remove($nFT, true);
         }
 
-        return $this->redirectToRoute('app_n_f_t_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_nft_index', [], Response::HTTP_SEE_OTHER);
     }
 }

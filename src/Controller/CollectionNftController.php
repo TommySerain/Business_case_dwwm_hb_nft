@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/collection/nft')]
+#[Route('/collection-nft')]
 class CollectionNftController extends AbstractController
 {
     #[Route('/', name: 'app_collection_nft_index', methods: ['GET'])]
