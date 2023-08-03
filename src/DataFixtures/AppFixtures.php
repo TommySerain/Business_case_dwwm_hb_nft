@@ -24,8 +24,7 @@ class AppFixtures extends Fixture
         for ($i = 0; $i <= self::NBCATEGORIES; $i++) {
             $category = new Category();
             $categories = [];
-            $category->setName($faker->word())
-                ->setSubCategory(NULL);
+            $category->setName($faker->word());
             $manager->persist($category);
             $categories[] = $category;
         }

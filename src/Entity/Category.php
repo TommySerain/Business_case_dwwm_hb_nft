@@ -18,15 +18,11 @@ class Category
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'subCategory')]
-    private ?self $subCategory = null;
-
     #[ORM\ManyToMany(targetEntity: NFT::class, mappedBy: 'category')]
     private Collection $nFTs;
 
     public function __construct()
     {
-        // $this->subCategory = new ArrayCollection();
         $this->nFTs = new ArrayCollection();
     }
 
@@ -46,40 +42,6 @@ class Category
 
         return $this;
     }
-
-    public function getSubCategory(): ?self
-    {
-        return $this->subCategory;
-    }
-
-    public function setSubCategory(?self $subCategory): static
-    {
-        $this->subCategory = $subCategory;
-
-        return $this;
-    }
-
-    // public function addSubCategory(self $subCategory): static
-    // {
-    //     if (!$this->subCategory->contains($subCategory)) {
-    //         $this->subCategory->add($subCategory);
-    //         $subCategory->setSubCategory($this);
-    //     }
-
-    //     return $this;
-    // }
-
-    // public function removeSubCategory(self $subCategory): static
-    // {
-    //     if ($this->subCategory->removeElement($subCategory)) {
-    //         // set the owning side to null (unless already changed)
-    //         if ($subCategory->getSubCategory() === $this) {
-    //             $subCategory->setSubCategory(null);
-    //         }
-    //     }
-
-    //     return $this;
-    // }
 
     /**
      * @return Collection<int, NFT>
