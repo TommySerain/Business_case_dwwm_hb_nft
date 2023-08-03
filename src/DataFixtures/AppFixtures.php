@@ -23,7 +23,6 @@ class AppFixtures extends Fixture
 
         for ($i = 0; $i <= self::NBCATEGORIES; $i++) {
             $category = new Category();
-            $categories = [];
             $category->setName($faker->word());
             $manager->persist($category);
             $categories[] = $category;
@@ -70,7 +69,7 @@ class AppFixtures extends Fixture
         $manager->persist($userRegular);
         $users[] = $userRegular;
 
-        for ($i = 0; $i <= self::NBNFT; $i++) {
+        for ($i = 0; $i < self::NBNFT; $i++) {
             $nft = new NFT();
             $nft->setName($faker->word())
                 ->setImg($faker->url())
@@ -80,7 +79,8 @@ class AppFixtures extends Fixture
                 ->setLaunchPriceEur($faker->randomFloat(0.1, 2))
                 ->setCollection($faker->randomElement($collectionsNft))
                 ->setUser($faker->randomElement($users))
-                ->setDescription($faker->paragraph(1));
+                ->setDescription($faker->paragraph(1))
+                ->addCategory($faker->randomElement($categories));
             $manager->persist($nft);
         };
 
