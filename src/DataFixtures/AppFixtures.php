@@ -10,6 +10,7 @@ use App\Entity\User;
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AppFixtures extends Fixture
 {
@@ -17,6 +18,9 @@ class AppFixtures extends Fixture
     const NBCOLLECTIONS = 5;
     const NBCOUNTRIES = 5;
     const NBNFT = 10;
+    public function __construct(private UserPasswordHasherInterface $hash)
+    {
+    }
     public function load(ObjectManager $manager): void
     {
         $faker = \Faker\Factory::create();
@@ -42,7 +46,7 @@ class AppFixtures extends Fixture
 
         $userAdmin = new User();
         $userAdmin->setEmail('tattyjosydu69@gmail.com')
-            ->setPassword('LaJosCasseLaBaraque')
+            ->setPassword($this->hash->hashPassword($userAdmin, 'LaJosCasseLaBaraque'))
             ->setFirstname('Josy')
             ->setLastname('Zirculaire')
             ->setPseudo('Decoupeuse')
@@ -57,7 +61,7 @@ class AppFixtures extends Fixture
 
         $userRegular = new User();
         $userRegular->setEmail('toto@gmail.com')
-            ->setPassword('toto')
+            ->setPassword($this->hash->hashPassword($userAdmin, 'toto'))
             ->setFirstname('toto')
             ->setLastname('toto')
             ->setPseudo('toto')
