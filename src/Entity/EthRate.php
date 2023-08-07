@@ -2,11 +2,16 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\EthRateRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: EthRateRepository::class)]
+#[ApiResource()]
+#[ApiFilter(SearchFilter::class, properties: ['rate_date' => 'ipartial'])]
 class EthRate
 {
     #[ORM\Id]

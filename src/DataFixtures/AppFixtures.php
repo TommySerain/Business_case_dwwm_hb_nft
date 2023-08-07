@@ -10,6 +10,7 @@ use App\Entity\User;
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AppFixtures extends Fixture
 {
@@ -17,13 +18,15 @@ class AppFixtures extends Fixture
     const NBCOLLECTIONS = 5;
     const NBCOUNTRIES = 5;
     const NBNFT = 10;
+    public function __construct(private UserPasswordHasherInterface $hash)
+    {
+    }
     public function load(ObjectManager $manager): void
     {
         $faker = \Faker\Factory::create();
 
         for ($i = 0; $i <= self::NBCATEGORIES; $i++) {
             $category = new Category();
-            $categories = [];
             $category->setName($faker->word());
             $manager->persist($category);
             $categories[] = $category;
@@ -43,7 +46,7 @@ class AppFixtures extends Fixture
 
         $userAdmin = new User();
         $userAdmin->setEmail('tattyjosydu69@gmail.com')
-            ->setPassword('LaJosCasseLaBaraque')
+            ->setPassword($this->hash->hashPassword($userAdmin, 'LaJosCasseLaBaraque'))
             ->setFirstname('Josy')
             ->setLastname('Zirculaire')
             ->setPseudo('Decoupeuse')
@@ -58,7 +61,7 @@ class AppFixtures extends Fixture
 
         $userRegular = new User();
         $userRegular->setEmail('toto@gmail.com')
-            ->setPassword('toto')
+            ->setPassword($this->hash->hashPassword($userAdmin, 'toto'))
             ->setFirstname('toto')
             ->setLastname('toto')
             ->setPseudo('toto')
@@ -70,7 +73,7 @@ class AppFixtures extends Fixture
         $manager->persist($userRegular);
         $users[] = $userRegular;
 
-        for ($i = 0; $i <= self::NBNFT; $i++) {
+        for ($i = 0; $i < self::NBNFT; $i++) {
             $nft = new NFT();
             $nft->setName($faker->word())
                 ->setImg($faker->url())
@@ -80,7 +83,8 @@ class AppFixtures extends Fixture
                 ->setLaunchPriceEur($faker->randomFloat(0.1, 2))
                 ->setCollection($faker->randomElement($collectionsNft))
                 ->setUser($faker->randomElement($users))
-                ->setDescription($faker->paragraph(1));
+                ->setDescription($faker->paragraph(1))
+                ->addCategory($faker->randomElement($categories));
             $manager->persist($nft);
         };
 

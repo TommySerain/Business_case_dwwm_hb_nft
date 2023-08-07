@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\User;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -13,7 +14,7 @@ class UserType extends AbstractType
     {
         $builder
             ->add('email')
-            ->add('roles')
+
             ->add('password')
             ->add('firstname')
             ->add('lastname')
@@ -22,8 +23,12 @@ class UserType extends AbstractType
             ->add('birthdate')
             ->add('address')
             ->add('zipcode')
-            ->add('country')
-        ;
+            ->add('country', EntityType::class, [
+                'class' => 'App\Entity\Country',
+                'choice_label' => 'name',
+                'multiple' => false,
+                'expanded' => false,
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

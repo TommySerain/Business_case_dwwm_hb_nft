@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Category;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -13,7 +14,12 @@ class CategoryType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('nFTs');
+            ->add('nFTs', EntityType::class, [
+                'class' => 'App\Entity\NFT',
+                'choice_label' => 'name',
+                'multiple' => true,
+                'expanded' => true,
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

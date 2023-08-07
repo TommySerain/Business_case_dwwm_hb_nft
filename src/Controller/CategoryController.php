@@ -5,7 +5,9 @@ namespace App\Controller;
 use App\Entity\Category;
 use App\Form\CategoryType;
 use App\Repository\CategoryRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -22,7 +24,7 @@ class CategoryController extends AbstractController
     }
 
     #[Route('/new', name: 'app_category_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, CategoryRepository $categoryRepository): Response
+    public function new(Request $request, CategoryRepository $categoryRepository, EntityManagerInterface $entityManager): Response
     {
         $category = new Category();
         $form = $this->createForm(CategoryType::class, $category);
@@ -38,6 +40,19 @@ class CategoryController extends AbstractController
             'category' => $category,
             'form' => $form,
         ]);
+
+        // if ($request->isMethod('POST')) {
+
+        //     $data = json_decode($request->getContent(), true);
+        //     $category = new Category();
+        //     $category->setName($data['name']);
+        //     $entityManager->persist($category);
+        //     $entityManager->flush();
+
+        //     return new JsonResponse(['message' => 'Nouvelle catégorie enregistrée avec succès.']);
+        // }
+
+        // return new JsonResponse(['message' => 'Méthode non autorisée. Veuillez utiliser une requête POST.'], Response::HTTP_METHOD_NOT_ALLOWED);
     }
 
     #[Route('/{id}', name: 'app_category_show', methods: ['GET'])]

@@ -1,11 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New NFT{% endblock %}
+{% block title %}New NFT
+{% endblock %}
 
 {% block body %}
-    <h1>Create new NFT</h1>
+	<h1>Create new NFT</h1>
 
-    {{ include('nft/_form.html.twig') }}
+	{{ include('nft/_form.html.twig') }}
 
-    <a href="{{ path('app_n_f_t_index') }}">back to list</a>
+	<a href="{{ path('app_nft_index') }}">back to list</a>
 {% endblock %}
