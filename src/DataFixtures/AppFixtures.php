@@ -84,7 +84,8 @@ class AppFixtures extends Fixture
                 ->setCollection($faker->randomElement($collectionsNft))
                 ->setUser($faker->randomElement($users))
                 ->setDescription($faker->paragraph(1))
-                ->addCategory($faker->randomElement($categories));
+                ->addCategory($faker->randomElement($categories))
+                ->setCreator($faker->name());
             $manager->persist($nft);
         };
 

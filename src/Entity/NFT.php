@@ -51,6 +51,9 @@ class NFT
     #[ORM\Column(length: 255)]
     private ?string $description = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $creator = null;
+
     public function __construct()
     {
         $this->category = new ArrayCollection();
@@ -189,6 +192,18 @@ class NFT
     public function setDescription(string $description): static
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function getCreator(): ?string
+    {
+        return $this->creator;
+    }
+
+    public function setCreator(string $creator): static
+    {
+        $this->creator = $creator;
 
         return $this;
     }
