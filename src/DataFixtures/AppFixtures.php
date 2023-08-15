@@ -76,7 +76,7 @@ class AppFixtures extends Fixture
         for ($i = 0; $i < self::NBNFT; $i++) {
             $nft = new NFT();
             $nft->setName($faker->word())
-                ->setImg($faker->url())
+                ->setImg($faker->imageUrl(200, 200))
                 ->setExistingNumber($faker->numberBetween(1, 10))
                 ->setLaunchDate(new DateTime($faker->date()))
                 ->setLaunchPriceEth($faker->randomFloat(0.1, 2))
