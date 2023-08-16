@@ -48,7 +48,7 @@ class NFT
     #[ORM\ManyToOne(inversedBy: 'nft')]
     private ?User $user = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
     #[ORM\Column(length: 255)]
