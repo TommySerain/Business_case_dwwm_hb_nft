@@ -22,39 +22,39 @@ class NFT
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['nft:read'])]
+    #[Groups(['nft:read', 'user:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['nft:read'])]
+    #[Groups(['nft:read', 'user:read'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['nft:read'])]
+    #[Groups(['nft:read', 'user:read'])]
     private ?string $img = null;
 
     #[ORM\Column]
-    #[Groups(['nft:read'])]
+    #[Groups(['nft:read', 'user:read'])]
     private ?int $existingNumber = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    #[Groups(['nft:read'])]
+    #[Groups(['nft:read', 'user:read'])]
     private ?\DateTimeInterface $launchDate = null;
 
     #[ORM\Column]
-    #[Groups(['nft:read'])]
+    #[Groups(['nft:read', 'user:read'])]
     private ?float $launchPriceEth = null;
 
     #[ORM\Column]
-    #[Groups(['nft:read'])]
+    #[Groups(['nft:read', 'user:read'])]
     private ?float $launchPriceEur = null;
 
     #[ORM\ManyToOne(inversedBy: 'nFTs')]
-    #[Groups(['nft:read'])]
+    #[Groups(['nft:read', 'user:read'])]
     private ?CollectionNft $collection = null;
 
     #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'nFTs')]
-    #[Groups(['nft:read'])]
+    #[Groups(['nft:read', 'user:read'])]
     private Collection $category;
 
     #[ORM\ManyToOne(inversedBy: 'nft')]
@@ -62,11 +62,11 @@ class NFT
     private ?User $user = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    #[Groups(['nft:read'])]
+    #[Groups(['nft:read', 'user:read'])]
     private ?string $description = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['nft:read'])]
+    #[Groups(['nft:read', 'user:read'])]
     private ?string $creator = null;
 
     public function __construct()

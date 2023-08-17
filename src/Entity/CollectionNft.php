@@ -9,21 +9,27 @@ use App\Repository\CollectionNftRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: CollectionNftRepository::class)]
-#[ApiResource()]
+#[ApiResource(
+    normalizationContext: ['groups' => 'nft:read', 'collection:read']
+)]
 #[ApiFilter(SearchFilter::class, properties: ['name' => 'ipartial'])]
 class CollectionNft
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['nft:read', 'collection:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['nft:read', 'collection:read'])]
     private ?string $name = null;
 
     #[ORM\OneToMany(mappedBy: 'collection', targetEntity: NFT::class)]
+    #[Groups(['nft:read'])]
     private Collection $nFTs;
 
 

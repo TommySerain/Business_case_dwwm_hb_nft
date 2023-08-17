@@ -9,21 +9,27 @@ use App\Repository\CountryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: CountryRepository::class)]
-#[ApiResource()]
+#[ApiResource(
+    normalizationContext: ['groups' => 'user:read', 'country:read']
+)]
 #[ApiFilter(SearchFilter::class, properties: ['name' => 'ipartial'])]
 class Country
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['user:read', 'country:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['user:read', 'country:read'])]
     private ?string $name = null;
 
     #[ORM\OneToMany(mappedBy: 'country', targetEntity: User::class)]
+    #[Groups(['country:read'])]
     private Collection $users;
 
     public function __construct()
