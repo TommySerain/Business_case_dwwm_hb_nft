@@ -13,7 +13,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 #[ApiResource(
-    normalizationContext: ['groups' => 'nft:read', 'category:read']
+    normalizationContext: ['groups' => 'category:read']
 )]
 #[ApiFilter(SearchFilter::class, properties: ['name' => 'ipartial'])]
 class Category

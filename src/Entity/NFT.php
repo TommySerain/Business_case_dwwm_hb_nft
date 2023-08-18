@@ -14,7 +14,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: NFTRepository::class)]
 #[ApiResource(
-    normalizationContext: ['groups' => 'nft:read', 'user:read']
+    normalizationContext: ['groups' => 'nft:read']
 )]
 #[ApiFilter(SearchFilter::class, properties: ['name' => 'ipartial'])]
 class NFT
@@ -22,15 +22,15 @@ class NFT
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['nft:read', 'user:read'])]
+    #[Groups(['category:read', 'nft:read', 'user:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['nft:read', 'user:read'])]
+    #[Groups(['category:read', 'nft:read', 'user:read'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['nft:read', 'user:read'])]
+    #[Groups(['category:read', 'nft:read', 'user:read'])]
     private ?string $img = null;
 
     #[ORM\Column]
