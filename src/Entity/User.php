@@ -16,7 +16,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ApiResource(
-    normalizationContext: ['groups' => 'user:read']
+    normalizationContext: ['groups' => 'user:read'],
+    denormalizationContext: ['groups' => 'user:write']
 )]
 #[ApiFilter(SearchFilter::class, properties: ['pseudo' => 'ipartial'])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -28,7 +29,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
-    #[Groups(['user:read', 'nft:read'])]
+    #[Groups(['user:read', 'nft:read', 'user:write'])]
     private ?string $email = null;
 
     #[ORM\Column]
@@ -39,39 +40,40 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      */
     #[ORM\Column]
+    #[Groups(['user:write'])]
     private ?string $password = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['user:read', 'nft:read'])]
+    #[Groups(['user:read', 'nft:read', 'user:write'])]
     private ?string $firstname = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['user:read', 'nft:read'])]
+    #[Groups(['user:read', 'nft:read', 'user:write'])]
     private ?string $lastname = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['user:read', 'nft:read'])]
+    #[Groups(['user:read', 'nft:read', 'user:write'])]
     private ?string $pseudo = null;
 
-    #[ORM\Column(type: Types::SMALLINT)]
-    #[Groups(['user:read'])]
-    private ?int $gender = null;
+    #[ORM\Column(length: 255)]
+    #[Groups(['user:read', 'user:write'])]
+    private ?string $gender = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    #[Groups(['user:read'])]
+    #[Groups(['user:read', 'user:write'])]
     private ?\DateTimeInterface $birthdate = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['user:read'])]
+    #[Groups(['user:read', 'user:write'])]
     private ?string $address = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['user:read'])]
+    #[Groups(['user:read', 'user:write'])]
     private ?string $zipcode = null;
 
-    #[ORM\ManyToOne(inversedBy: 'users')]
+    #[ORM\ManyToOne(inversedBy: 'users', cascade: ["persist"])]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['user:read'])]
+    #[Groups(['user:read', 'user:write'])]
     private ?Country $country = null;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: NFT::class)]

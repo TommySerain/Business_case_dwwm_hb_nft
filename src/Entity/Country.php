@@ -13,7 +13,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: CountryRepository::class)]
 #[ApiResource(
-    normalizationContext: ['groups' => 'country:read']
+    normalizationContext: ['groups' => 'country:read'],
+    denormalizationContext: ['groups' => 'user:write']
 )]
 #[ApiFilter(SearchFilter::class, properties: ['name' => 'ipartial'])]
 class Country
@@ -25,11 +26,11 @@ class Country
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['country:read', 'user:read'])]
+    #[Groups(['country:read', 'user:read', 'user:write'])]
     private ?string $name = null;
 
     #[ORM\OneToMany(mappedBy: 'country', targetEntity: User::class)]
-    #[Groups(['country:read'])]
+    #[Groups(['user:write'])]
     private Collection $users;
 
     public function __construct()
