@@ -30,7 +30,6 @@ class Country
     private ?string $name = null;
 
     #[ORM\OneToMany(mappedBy: 'country', targetEntity: User::class)]
-    #[Groups(['user:write'])]
     private Collection $users;
 
     public function __construct()
