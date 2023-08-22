@@ -11,11 +11,9 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserEventSubscriber implements EventSubscriberInterface
 {
-    private $passwordHasher;
 
-    public function __construct(UserPasswordHasherInterface $passwordHasher)
+    public function __construct(private UserPasswordHasherInterface $passwordHasher)
     {
-        $this->passwordHasher = $passwordHasher;
     }
 
     public static function getSubscribedEvents()
@@ -33,7 +31,6 @@ class UserEventSubscriber implements EventSubscriberInterface
             return;
         }
 
-        // Hash the password
         $hashedPassword = $this->passwordHasher->hashPassword($user, $user->getPassword());
         $user->setPassword($hashedPassword);
     }
