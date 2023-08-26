@@ -17,7 +17,7 @@ class AppFixtures extends Fixture
     const NBCATEGORIES = 5;
     const NBCOLLECTIONS = 5;
     const NBCOUNTRIES = 5;
-    const NBNFT = 10;
+    const NBNFT = 30;
     public function __construct(private UserPasswordHasherInterface $hash)
     {
     }
@@ -79,8 +79,8 @@ class AppFixtures extends Fixture
                 ->setImg($faker->imageUrl(200, 200))
                 ->setExistingNumber($faker->numberBetween(1, 10))
                 ->setLaunchDate(new DateTime($faker->date()))
-                ->setLaunchPriceEth($faker->randomFloat(0.1, 2))
-                ->setLaunchPriceEur($faker->randomFloat(0.1, 2))
+                ->setLaunchPriceEth($faker->randomFloat(2, 0, 2))
+                ->setLaunchPriceEur($nft->getLaunchPriceEth() * 1500)
                 ->setCollection($faker->randomElement($collectionsNft))
                 ->setUser($faker->randomElement($users))
                 ->setDescription($faker->paragraph(1))
