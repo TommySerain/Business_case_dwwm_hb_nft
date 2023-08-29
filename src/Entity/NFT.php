@@ -14,7 +14,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: NFTRepository::class)]
 #[ApiResource(
-    normalizationContext: ['groups' => 'nft:read']
+    normalizationContext: ['groups' => 'nft:read'],
+    denormalizationContext: ['groups' => 'nft:write', 'nft:update']
 )]
 #[ApiFilter(SearchFilter::class, properties: ['name' => 'ipartial'])]
 class NFT
@@ -26,7 +27,7 @@ class NFT
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['category:read', 'nft:read', 'user:read'])]
+    #[Groups(['category:read', 'nft:read', 'user:read', 'nft:write', 'nft:update'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
@@ -50,11 +51,11 @@ class NFT
     private ?float $launchPriceEur = null;
 
     #[ORM\ManyToOne(inversedBy: 'nFTs')]
-    #[Groups(['nft:read', 'user:read'])]
+    #[Groups(['nft:read', 'user:read', 'nft:write', 'nft:update'])]
     private ?CollectionNft $collection = null;
 
     #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'nFTs')]
-    #[Groups(['nft:read', 'user:read'])]
+    #[Groups(['nft:read', 'user:read', 'nft:write', 'nft:update'])]
     private Collection $category;
 
     #[ORM\ManyToOne(inversedBy: 'nft')]
@@ -62,7 +63,7 @@ class NFT
     private ?User $user = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    #[Groups(['nft:read', 'user:read'])]
+    #[Groups(['nft:read', 'user:read', 'nft:write', 'nft:update'])]
     private ?string $description = null;
 
     #[ORM\Column(length: 255)]

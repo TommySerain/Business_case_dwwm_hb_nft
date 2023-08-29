@@ -13,7 +13,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 #[ApiResource(
-    normalizationContext: ['groups' => 'category:read']
+    normalizationContext: ['groups' => 'category:read'],
+    denormalizationContext: ['groups' => 'nft:write', 'nft:update']
 )]
 #[ApiFilter(SearchFilter::class, properties: ['name' => 'ipartial'])]
 class Category
@@ -21,11 +22,11 @@ class Category
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['nft:read', 'category:read'])]
+    #[Groups(['nft:read', 'category:read', 'nft:update'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['nft:read', 'category:read'])]
+    #[Groups(['nft:read', 'category:read', 'nft:update'])]
     private ?string $name = null;
 
     #[ORM\ManyToMany(targetEntity: NFT::class, mappedBy: 'category')]

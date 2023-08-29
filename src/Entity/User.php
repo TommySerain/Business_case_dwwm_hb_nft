@@ -25,11 +25,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['user:read', 'nft:read'])]
+    #[Groups(['user:read', 'nft:read', 'collection:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
-    #[Groups(['user:read', 'nft:read', 'user:write'])]
+    #[Groups(['user:read', 'nft:read', 'user:write', 'collection:read'])]
     private ?string $email = null;
 
     #[ORM\Column]
@@ -80,9 +80,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['user:read'])]
     private Collection $nft;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: CollectionNft::class)]
+    #[Groups(['user:read'])]
+    private Collection $collection;
+
     public function __construct()
     {
         $this->nft = new ArrayCollection();
+        $this->collection = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -295,6 +300,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($nft->getUser() === $this) {
                 $nft->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CollectionNft>
+     */
+    public function getCollection(): Collection
+    {
+        return $this->collection;
+    }
+
+    public function addCollection(CollectionNft $collection): static
+    {
+        if (!$this->collection->contains($collection)) {
+            $this->collection->add($collection);
+            $collection->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCollection(CollectionNft $collection): static
+    {
+        if ($this->collection->removeElement($collection)) {
+            // set the owning side to null (unless already changed)
+            if ($collection->getUser() === $this) {
+                $collection->setUser(null);
             }
         }
 

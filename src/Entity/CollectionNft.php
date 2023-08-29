@@ -13,7 +13,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: CollectionNftRepository::class)]
 #[ApiResource(
-    normalizationContext: ['groups' => 'collection:read']
+    normalizationContext: ['groups' => 'collection:read'],
+    denormalizationContext: ['groups' => 'nft:write']
 )]
 #[ApiFilter(SearchFilter::class, properties: ['name' => 'ipartial'])]
 class CollectionNft
@@ -21,16 +22,20 @@ class CollectionNft
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['nft:read', 'collection:read'])]
+    #[Groups(['nft:read', 'collection:read', 'user:read', 'nft:write'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['nft:read', 'collection:read'])]
+    #[Groups(['nft:read', 'collection:read', 'user:read', 'nft:write'])]
     private ?string $name = null;
 
     #[ORM\OneToMany(mappedBy: 'collection', targetEntity: NFT::class)]
-    #[Groups(['collection:read'])]
+    #[Groups(['collection:read', 'user:read'])]
     private Collection $nFTs;
+
+    #[ORM\ManyToOne(inversedBy: 'collection')]
+    #[Groups(['collection:read', 'nft:read'])]
+    private ?User $user = null;
 
 
     public function __construct()
@@ -81,6 +86,18 @@ class CollectionNft
                 $nFT->setCollection(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }
