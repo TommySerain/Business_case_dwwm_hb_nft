@@ -14,7 +14,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Entity(repositoryClass: CollectionNftRepository::class)]
 #[ApiResource(
     normalizationContext: ['groups' => 'collection:read'],
-    denormalizationContext: ['groups' => 'nft:write']
+    denormalizationContext: ['groups' => 'collection:write', 'nft:write']
 )]
 #[ApiFilter(SearchFilter::class, properties: ['name' => 'ipartial'])]
 class CollectionNft
@@ -26,7 +26,7 @@ class CollectionNft
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['nft:read', 'collection:read', 'user:read', 'nft:write'])]
+    #[Groups(['nft:read', 'collection:read', 'user:read', 'nft:write', 'collection:write'])]
     private ?string $name = null;
 
     #[ORM\OneToMany(mappedBy: 'collection', targetEntity: NFT::class)]
@@ -34,7 +34,7 @@ class CollectionNft
     private Collection $nFTs;
 
     #[ORM\ManyToOne(inversedBy: 'collection')]
-    #[Groups(['collection:read', 'nft:read'])]
+    #[Groups(['collection:read', 'nft:read', 'collection:write'])]
     private ?User $user = null;
 
 
