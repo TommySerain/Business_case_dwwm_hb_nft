@@ -76,12 +76,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['user:read', 'user:write'])]
     private ?Country $country = null;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: NFT::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: NFT::class, cascade: ["remove"])]
     #[Groups(['user:read'])]
     private Collection $nft;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: CollectionNft::class)]
-    #[Groups(['user:read'])]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: CollectionNft::class, cascade: ["remove"])]
+    #[Groups(['user:read', 'nft:read'])]
     private Collection $collection;
 
     public function __construct()

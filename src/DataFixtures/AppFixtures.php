@@ -17,7 +17,7 @@ class AppFixtures extends Fixture
     const NBCATEGORIES = 5;
     const NBCOLLECTIONS = 5;
     const NBCOUNTRIES = 5;
-    const NBNFT = 30;
+    const NBNFT = 20;
     public function __construct(private UserPasswordHasherInterface $hash)
     {
     }
@@ -30,12 +30,6 @@ class AppFixtures extends Fixture
             $category->setName($faker->word());
             $manager->persist($category);
             $categories[] = $category;
-        }
-        for ($i = 0; $i < self::NBCOLLECTIONS; $i++) {
-            $collectionNft = new CollectionNft();
-            $collectionNft->setName($faker->word());
-            $manager->persist($collectionNft);
-            $collectionsNft[] = $collectionNft;
         }
         for ($i = 0; $i < self::NBCOUNTRIES; $i++) {
             $country = new Country();
@@ -72,6 +66,14 @@ class AppFixtures extends Fixture
             ->setCountry($faker->randomElement($countries));
         $manager->persist($userRegular);
         $users[] = $userRegular;
+
+        for ($i = 0; $i < self::NBCOLLECTIONS; $i++) {
+            $collectionNft = new CollectionNft();
+            $collectionNft->setName($faker->word());
+            $collectionNft->setUser($faker->randomElement($users));
+            $manager->persist($collectionNft);
+            $collectionsNft[] = $collectionNft;
+        }
 
         for ($i = 0; $i < self::NBNFT; $i++) {
             $nft = new NFT();
